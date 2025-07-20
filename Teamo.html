@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Te Amo 💗</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: url('https://elinfografico.mx/wp-content/uploads/2020/10/galaxia-andromeda-mexico-queretaro-el-infografico.png');
+      background-size: cover;
+      background-position: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      background-blend-mode: darken;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      cursor: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') 16 16, auto;
+    }
+
+    .centrado {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10vw;
+      color: #ff3366;
+      text-shadow: 2px 2px 6px #ff8fa3;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .lluvia {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      display: flex;
+      justify-content: space-around;
+      overflow: hidden;
+    }
+
+    .columna {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation-name: scroll;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      filter: blur(0.6px);
+    }
+
+    .columna span {
+      font-size: 2.5vw;
+      color: #ff3366;
+      margin: 10px 0;
+      white-space: nowrap;
+      user-select: none;
+      text-shadow: 1px 1px 3px #ff8fa3;
+    }
+
+    @keyframes scroll {
+      0% { transform: translateY(-100%); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(100%); opacity: 0; }
+    }
+
+    .teamo {
+      position: absolute;
+      color: #ff3366;
+      font-size: 2rem;
+      pointer-events: none;
+      animation: floatUp 1s ease-out forwards;
+      user-select: none;
+      white-space: nowrap;
+      text-shadow: 1px 1px 4px #ff8fa3;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-80px) scale(1.5);
+      }
+    }
+
+    @keyframes floatOut {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--x), var(--y)) scale(1.5);
+       }
+    }
+  </style>
+</head>
+<body>
+
+    <audio autoplay loop muted id="bg-music">
+      <source src="https://files.catbox.moe/ou1wlo.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+      // Activa el sonido con el primer clic del usuario
+      window.addEventListener('click', function () {
+      const audio = document.getElementById('bg-music');
+      audio.muted = false;
+      audio.play();
+      }, { once: true });
+    </script>
+
+  <!-- Mensaje principal -->
+  <div class="centrado">Lilian Caliope 💗</div>
+
+  <!-- Fondo animado en columnas -->
+  <div class="lluvia" id="fondo"></div>
+
+  <script>
+    const fondo = document.getElementById("fondo");
+    const columnas = 12;
+    const filas = 40;
+
+    for (let i = 0; i < columnas; i++) {
+      const col = document.createElement("div");
+      col.classList.add("columna");
+
+      const duration = 5 + Math.random() * 4;
+      const delay = Math.random() * 3;
+      col.style.animationDuration = duration + "s";
+      col.style.animationDelay = delay + "s";
+
+      for (let j = 0; j < filas; j++) {
+        const span = document.createElement("span");
+        span.textContent = Math.random() < 0.2 ? "te amo" : " ";
+        col.appendChild(span);
+      }
+
+      fondo.appendChild(col);
+    }
+
+    // Efecto de muchos "te amo" al hacer clic
+    document.addEventListener("click", function(e) {
+      const cantidad = 11;
+      const radio = 100;
+
+      for (let i = 0; i < cantidad; i++) {
+        const angle = 2 * Math.PI * (i / cantidad);
+        const offsetX = Math.cos(angle) * radio;
+        const offsetY = Math.sin(angle) * radio;
+
+        const span = document.createElement("span");
+        span.className = "teamo";
+        span.textContent = "te amo 💗";
+        span.style.left = e.pageX + "px";
+        span.style.top = e.pageY + "px";
+        span.style.setProperty("--x", `${offsetX}px`);
+        span.style.setProperty("--y", `${offsetY}px`);
+        span.style.animation = "floatOut 1s ease-out forwards";
+        document.body.appendChild(span);
+
+        setTimeout(() => {
+          span.remove();
+        }, 1000);
+      }
+    });
+  </script>
+
+</body>
+</html>
